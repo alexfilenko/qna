@@ -4,3 +4,9 @@
 .ruby-gemset
 
 *.log
+
+*.cache
+
+*.txt
+
+*.html
