@@ -11,7 +11,6 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
-gem 'capybara'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -22,6 +21,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', require: false
+  gem 'capybara'
 end
 
 group :development do
