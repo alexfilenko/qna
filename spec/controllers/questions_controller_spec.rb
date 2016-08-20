@@ -35,6 +35,12 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #new' do
+    before do
+      @user = create(:user)
+      @request.env['device.mapping'] = Device.mappings[:user]
+      sign_in @user
+    end
+    
     before { get :new }
     
     it 'assigns anew Question to @question' do
