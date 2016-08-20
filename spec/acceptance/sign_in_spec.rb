@@ -6,12 +6,13 @@ feature 'User sign in', %q{
   I want to be able to sign in
 } do
 
+  given(:user) { create(:user) }
+
   scenario 'Registred user try to sign in' do
-    User.create!(email: 'user@test.com', password: '12345678')
 
     visit new_user_session_path #visit '/sign_in'
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
     #save_and_open_page
     click_on 'Log in'
 
