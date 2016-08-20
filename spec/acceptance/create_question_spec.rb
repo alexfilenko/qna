@@ -6,6 +6,8 @@ feature 'Question stories', %q{
   I want to be able working with questions
 } do
 
+  given(:user) { create(:user) }
+  
   scenario 'Authenticated user creates question' do
     User.create!(email: 'user@test.com', password: '12345678')
 
