@@ -7,15 +7,18 @@ feature 'Answer stories', %q{
   I want to be able working with answers
 } do
 
-  given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
-  given(:user_answer) { create(:answer, question: question, user: user) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question) }
 
-  scenario 'User reviews answers' do
-    answer
 
-    visit question_path question
-    expect(page).to have_content answer.body
+  scenario 'User create answer' do
+    sign_in(user)
+    visit questions_path(question)
+    fill_in 'Body', with: 'text text'
+    click_on 'Create'
+
+    expect(page).to have_content 'Your answer successfully created.'
+    expect(page).to have_content('Some answer body')
+    expect(current_path).to eq question_path(question)
   end
 end
