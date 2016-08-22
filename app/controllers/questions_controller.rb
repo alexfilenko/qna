@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
   
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
   
   def edit
@@ -19,6 +19,7 @@ class QuestionsController < ApplicationController
   
   def create
     @question = Question.new(question_params)
+    @question.user = current_user
     
     if @question.save
       redirect_to @question

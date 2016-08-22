@@ -7,6 +7,7 @@ feature 'Question stories', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:user_question) { create(:question, user: user) }
   
   scenario 'Authenticated user creates question' do
     sign_in(user)
