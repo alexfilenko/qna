@@ -26,4 +26,17 @@ feature 'Question stories', %q{
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
+
+    scenario 'Authenticated user delete question' do
+    sign_in(user)
+    visit question_path user_question
+    click_on 'Delete'
+    expect(page).to have_content 'Your question successfully deleted'
+  end
+
+    scenario 'User see all questions' do
+    visit questions_path
+    expect(page).to have_content user_question.title
+    expect(page).to have_content smb_question.title
+  end
 end
