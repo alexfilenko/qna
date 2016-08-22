@@ -26,4 +26,25 @@ feature 'User sign in', %q{
     expect(page).to have_content 'Invalid Email or password.'
     expect(current_path).to eq new_user_session_path
   end
+
+  scenario 'User logout' do
+    sign_in(user)
+
+    click_on 'Sign out'
+
+    expect(page).to have_content 'Signed out successfully.'
+  end
+
+  scenario 'User reg' do
+    visit root_path
+    click_on 'Registration'
+
+    fill_in 'Email', with: 'user@test.com'
+    fill_in 'Password', with: '12345678'
+    fill_in 'user_password_conformation', with: '12345678'
+
+    click_on 'Sign up'
+
+    expect(page).to have_content 'You have signed up successfully.'
+  end
 end
