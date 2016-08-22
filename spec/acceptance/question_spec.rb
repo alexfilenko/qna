@@ -7,7 +7,8 @@ feature 'Question stories', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:user_question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
+  given!(:other_question) { create :question }
   
   scenario 'Authenticated user creates question' do
     sign_in(user)
@@ -35,8 +36,9 @@ feature 'Question stories', %q{
   end
 
     scenario 'User see all questions' do
-    visit questions_path
-    expect(page).to have_content user_question.title
-    expect(page).to have_content smb_question.title
+    visit questions_path(question)
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content answer.body
   end
 end
