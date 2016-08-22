@@ -11,10 +11,9 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     
     if @answer.save
-      redirect_to @question
-    else
-      render :new
+      flash[:notice] = 'Your answer successfully created.'
     end
+    redirect_to @question
   end
 
   def destroy

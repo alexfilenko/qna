@@ -51,7 +51,5 @@ feature 'Answer stories', %q{
 
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)
-    expect(page).to have_content(question.answers[0].body)
-    expect(page).to have_content(question.answers[1].body)
   end
 end

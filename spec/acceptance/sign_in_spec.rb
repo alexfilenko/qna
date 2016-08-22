@@ -37,6 +37,7 @@ feature 'User sign in', %q{
 
   scenario 'User reg' do
     visit root_path
+    save_and_open_page
     click_on 'Registration'
 
     fill_in 'Email', with: 'user@test.com'
