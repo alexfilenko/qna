@@ -5,10 +5,10 @@ feature 'Answer stories', %q{
   Create, Delete, View
 } do
 
-  given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
-  given(:user_answer) { create(:answer, question: question, user: user) }
+    given!(:user) { create(:user) }
+    given!(:question) { create(:question) }
+    given(:answer) { create(:answer, question: question) }
+    given(:user_answer) { create(:answer, question: question, user: user) }
 
 
   scenario 'User create answer' do
@@ -51,5 +51,7 @@ feature 'Answer stories', %q{
 
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)
+    expect(page).to have_content(question.answers[0].body)
+    expect(page).to have_content(question.answers[1].body)
   end
 end
