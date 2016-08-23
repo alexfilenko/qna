@@ -19,7 +19,7 @@ RSpec.describe QuestionsController, type: :controller do
   
   describe 'GET #show' do
     
-    before { get :show, id: question }
+    before { get :show, params: {id: question }}
     
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
@@ -68,6 +68,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves the new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
+
+      it 'belong to logged in user' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(@user.questions, :count).by(1)
+      end
       
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) } 
@@ -109,7 +113,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
     
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
+      before { patch :update, params: { id: question, question: attributes_for(:invalid_question) } }
       
       it 'does not change question attributes' do
         question.reload
@@ -125,8 +129,10 @@ RSpec.describe QuestionsController, type: :controller do
   
   describe 'DELETE #destroy' do
     sign_in_user
-    before { question }
-    
+
+    context 'author' do
+      before { question.update(user_id: @user.id) }
+
     it 'deletes question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
@@ -135,5 +141,13 @@ RSpec.describe QuestionsController, type: :controller do
       delete :destroy, params: { id: question }
       expect(response).to redirect_to questions_path
     end
-  end  
+  end
+
+    context 'not author' do
+      before { question }
+    it 'does not delete question' do
+        expect { delete :destroy, params: { id: question} }.to_not change(Question, :count)
+    end
+end
+end
 end
