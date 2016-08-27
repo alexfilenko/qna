@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :answer do
     body "MyText"
-    question_id 1
+    question
   end
 
   factory :invalid_answer, class: "answer" do

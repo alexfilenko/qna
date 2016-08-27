@@ -17,7 +17,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
-  gem 'byebug', platform: :mri
+  gem 'pry-byebug'
 end
 
 group :test do
