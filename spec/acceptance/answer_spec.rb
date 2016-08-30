@@ -13,9 +13,9 @@ feature 'Answer stories', %q{
 
   scenario 'User create answer' do
     sign_in(user)
+    click_on 'Add answer'
     visit questions_path(question)
     fill_in 'Body', with: 'text text'
-    click_on 'Create'
 
     expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content('text text')
@@ -24,7 +24,6 @@ feature 'Answer stories', %q{
 
     scenario 'Non-authenticated user create answer' do
     visit question_path(question)
-    click_on 'Post your answer'
 
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(current_path).to eq new_user_session_path
@@ -33,7 +32,7 @@ feature 'Answer stories', %q{
     scenario 'Aut user delete answer' do
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete answer'
+    click_on 'Delete'
 
     expect(page).to_not have_content(answer.body)
     expect(current_path).to eq question_path(question)

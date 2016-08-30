@@ -41,7 +41,7 @@ feature 'User sign in', %q{
 
     fill_in 'Email', with: 'user@test.com'
     fill_in 'Password', with: '12345678'
-    fill_in 'user_password_conformation', with: '12345678'
+    fill_in 'Password conformation', with: '12345678'
 
     click_on 'Sign up'
 
