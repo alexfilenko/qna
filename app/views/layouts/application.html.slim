@@ -10,13 +10,12 @@ html
       nav.navbar.navbar-default
         .container-fluid
           .navbar-brand
-            = link_to 'Link 1', '#'
           ul.nav.navbar-nav.navbar-right
             - if current_user
-              li = link_to 'Log out', destroy_user_session_path, method: :delete
+              li = link_to 'Sign out', destroy_user_session_path, method: :delete
             - else
-              li = link_to 'Log in', new_user_session_path
-              li = link_to 'Register', new_user_registration_path
+              li = link_to 'Sign in', new_user_session_path
+              li = link_to 'Registration', new_user_registration_path
 
       = render 'shared/notice'
 
