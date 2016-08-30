@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:show, :index]
+  before_action :load_question, only: [:edit, :update, :destroy]
   
   def index
     @questions = Question.all
@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if @question.save
-      flash[:notice] = 'Your question successfully created.'
+      flash[:success] = 'Your question successfully created.'
       redirect_to @question
     else
       render :new
@@ -47,7 +47,7 @@ class QuestionsController < ApplicationController
       redirect_to questions_path
     else
       current_user.questions.destroy(@question)
-      flash[:notice] = 'You are not the author'
+      flash[:success] = 'You are not the author'
       redirect_to questions_path
     end
   end

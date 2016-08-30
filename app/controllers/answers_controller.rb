@@ -8,7 +8,7 @@ class AnswersController < ApplicationController
   end
 
   def edit
-    unless @answer.user = current_user
+    unless @answer.user == current_user
       flash[:danger] = "You can not edit this answer"
       redirect_to question_path @question
     end
