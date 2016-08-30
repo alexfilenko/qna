@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:new, :create]
   before_action :load_question
   before_action :load_answer, only: [:edit, :update, :destroy]
 
@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   def edit
     unless @answer.user == current_user
       flash[:danger] = "You can not edit this answer"
-      redirect_to question_path @question
+      redirect_to @question
     end
   end
 
@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if @answer.user == current_user
+    if @answer.user_id == current_user.id
       @answer.destroy
       flash[:success] = "Your answer successfully deleted"
       redirect_to @question
