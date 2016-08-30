@@ -1,9 +1,4 @@
-= form_for @question do |f|
-  p
-    = f.label :title
-    = f.text_field :title
-  p
-    = f.label :body
-    = f.text_area :body
-  p
-    = f.submit 'Create Question
+= simple_form_for question do |f|
+  = f.input :title, label: 'Title'
+  = f.input :body, label: 'Body'
+  .btn = f.submit 'Create'

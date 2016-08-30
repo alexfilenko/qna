@@ -1,30 +1,49 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_question, only: [:new, :create]
+  before_action :load_question
+  before_action :load_answer, only: [:edit, :update, :destroy]
 
   def new
-    @answer = @question.answers.build
+    @answer = @question.answers.new
+  end
+
+  def edit
+    unless @answer.user = current_user
+      flash[:danger] = "You can not edit this answer"
+      redirect_to question_path @question
+    end
   end
 
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
+    @answer = current_user.answers.build(answer_params)
     
     if @answer.save
       flash[:notice] = 'Your answer successfully created.'
+      redirect_to @question
+    else
+      p @answer.errors
+      render :new
     end
-    redirect_to @question
+  end
+
+  def update
+    if @answer.update(answer_params)
+      flash[:success] = "Your answer successfully changed"
+      redirect_to @question
+    else
+      render :edit
+    end
   end
 
   def destroy
-    @answer = Answer.find(params[:id])
-    if current_user.author_of?(@answer)
+    if @answer.user == current_user
       @answer.destroy
-      flash[:notice] = 'Your answer successfully deleted.'
+      flash[:success] = "Your answer successfully deleted"
+      redirect_to @question
     else
-      flash[:notice] = 'You are not the author.'
+      flash[:danger] = "You can not delete this answer"
+      redirect_to question_path @question
     end
-    redirect_to @answer.question
   end
 
   private
@@ -33,7 +52,11 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
   end
 
+  def load_answer
+    @answer = @question.answers.find_by(id: params[:id])
+  end
+
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:question_id, :body).merge(question: @question)
   end
 end

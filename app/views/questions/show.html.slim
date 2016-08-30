@@ -1,14 +1,31 @@
-h1=@question.title
-p=@question.body
-p=link_to 'Delete question', question_path(@question), method: :delete if user_signed_in? && current_user.author_of?(@question)
+h3
+  = @question.title
+hr
+.container-fluid
+  = @question.body
+  hr
 
--if @question.answers.any?
-  h4 Answers:
-  -@question.answers.each do |answer|
-    p=answer.body
-    =link_to 'Delete answer', answer_path(answer), method: :delete if user_signed_in? && current_user.author_of?(answer)
+  - if @question.answers.any?
+    h4 #{@question.answers.count} Answers
+    table.table.table-striped
+      tbody
+        - @question.answers.each do |answer|
+          tr
+            td = answer.body
+            td
+              - if current_user == answer.user
+                = link_to 'Edit', edit_question_answer_path(id: answer, 
+                           question_id: @question)
+                br
+                = link_to 'Delete', [@question, answer], 
+                           data: { confirm: 'Sure?' }, 
+                           method: :delete
 
-= form_for [@question, @answer] do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Post your answer'
+  br
+  - if current_user == @question.user
+    =<> link_to 'Edit', edit_question_path(@question)
+    =<> link_to 'Delete', @question, data: { confirm: 'Sure?' }, method: :delete
+  - if current_user
+    =<> link_to 'Add answer', new_question_answer_path(question_id: @question)
+  hr
+  = link_to 'Back', questions_path

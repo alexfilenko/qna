@@ -7,19 +7,23 @@ class QuestionsController < ApplicationController
   end
   
   def show
-    @answer = @question.answers.build
+    @question = Question.find(params[:id])
   end
   
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
   
   def edit
+    if @question.nil?
+    flash[:danger] = "You can not edit this question"
+    redirect_to questions_path
+    end
   end
   
   def create
-    @question = Question.new(question_params)
-    @question.user = current_user
+    @question = current_user.questions.new(question_params)
+
     if @question.save
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
@@ -30,6 +34,7 @@ class QuestionsController < ApplicationController
   
   def update
     if @question.update(question_params)
+      flash[:success] = "Your question successfully changed"
       redirect_to @question
     else
       render :edit
@@ -37,20 +42,20 @@ class QuestionsController < ApplicationController
   end
   
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      flash[:notice] = 'Your question successfully deleted.'
+    if @question.nil?
+      flash[:danger] = "You can not delete this question"
       redirect_to questions_path
     else
+      current_user.questions.destroy(@question)
       flash[:notice] = 'You are not the author'
-      redirect_to @question
+      redirect_to questions_path
     end
   end
   
   private
   
   def load_question
-    @question = Question.find(params[:id])
+    @question = current_user.questions.find_by(id: params[:id])
   end
   
   def question_params
