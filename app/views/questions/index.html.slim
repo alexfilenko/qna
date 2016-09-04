@@ -13,6 +13,9 @@ table.table.table-striped
         td
           = link_to 'View', question
           br
-
-- if current_user
+          = link_to 'Delete', question
+          br
+          = link_to 'Add answer', question
+          br
+- if user_signed_in?
   = link_to 'Ask question', new_question_path

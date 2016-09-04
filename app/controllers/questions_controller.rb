@@ -34,29 +34,35 @@ class QuestionsController < ApplicationController
   end
   
   def update
-    if @question.update(question_params)
-      flash[:success] = "Your question successfully changed"
-      redirect_to @question
+    if current_user.author_of?(@question)
+      if @question.update(question_params)
+        flash[:success] = "Your question has been updated successfully."
+        redirect_to @question
+      else
+        flash[:error] = @question.errors.full_messages
+        render :edit
+      end
     else
-      render :edit
+      flash[:error] = "You cannot edit questions written by others."
+      redirect_to @question
     end
   end
   
   def destroy
-    if @question.nil?
-      flash[:danger] = "You can not delete this question"
+    if current_user.author_of?(@question)
+      @question.destroy
+      flash[:success] = "Your question has been successfully deleted!"
       redirect_to questions_path
     else
-      current_user.questions.destroy(@question)
-      flash[:success] = 'You are not the author'
-      redirect_to questions_path
+      flash[:error] = "You cannot delete questions written by others."
+      redirect_to @question
     end
   end
   
   private
   
   def load_question
-    @question = current_user.questions.find_by(id: params[:id])
+    @question = Question.find(params[:id])
   end
   
   def question_params

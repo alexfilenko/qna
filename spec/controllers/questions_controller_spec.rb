@@ -51,10 +51,10 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #edit' do
     sign_in_user
     
-    before { get :edit, params: { id: user_question } }
+    before { get :edit, params: { id: question } }
     
     it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq user_question
+      expect(assigns(:question)).to eq question
     end
     
     it 'render edit view' do
@@ -117,8 +117,8 @@ RSpec.describe QuestionsController, type: :controller do
       
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq 'new title'
+        expect(question.body).to eq 'new body'
       end
       
       it 're-render new view' do
@@ -148,6 +148,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'does not delete question' do
         expect { delete :destroy, params: { id: question} }.to_not change(Question, :count)
     end
-end
-end
+   end
+  end
 end

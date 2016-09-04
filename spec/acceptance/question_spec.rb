@@ -28,7 +28,7 @@ feature 'Question stories', %q{
 
     scenario 'Authenticated user delete question' do
     sign_in(user)
-    visit question_path user_question
+    visit question_path
     click_on 'Delete'
     expect(page).to have_content 'Your question successfully deleted'
   end

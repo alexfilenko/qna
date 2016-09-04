@@ -35,7 +35,7 @@ feature 'User sign in', %q{
     expect(page).to have_content 'Signed out successfully.'
   end
 
-  scenario 'User reg' do
+  scenario 'User registration' do
     visit root_path
     click_on 'Registration'
 

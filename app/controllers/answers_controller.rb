@@ -27,7 +27,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.update(answer_params)
+   if @answer.update(answer_params)
       flash[:success] = "Your answer successfully changed"
       redirect_to @question
     else
@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if @answer.user_id == current_user.id
+   if @answer.user_id == current_user.id
       @answer.destroy
       flash[:success] = "Your answer successfully deleted"
       redirect_to @question

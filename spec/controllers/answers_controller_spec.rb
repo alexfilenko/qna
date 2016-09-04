@@ -21,10 +21,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before do
-      log_in user
-      get :edit, id: user_answer, question_id: question
-    end
+    sign_in_user
 
     it 'assigns the requested answer to @answer' do
       expect(assigns(:answer)).to eq user_answer
@@ -72,9 +69,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before do
-      log_in user
-    end
+    sign_in_user
 
     context 'with valid attributes' do
       it 'changes answer attributes' do
@@ -113,14 +108,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before do
-      log_in user
-      user_answer
-    end
+    sign_in_user
 
     it 'deletes answer' do
-      expect { delete :destroy, id: user_answer, question_id: question }
-        .to change(Answer, :count).by(-1)
+      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
     end
 
     it 'redirects to question' do
