@@ -8,7 +8,7 @@ feature 'Question stories', %q{
 
     given!(:user) { create(:user) }
     given!(:user_question) { create(:question, user: user) }
-    let!(:question) { create(:question) }
+    given!(:question) { create(:question) }
 
   
   scenario 'Authenticated user creates question' do
@@ -37,9 +37,7 @@ feature 'Question stories', %q{
     scenario 'User see all questions' do
     visit questions_path
     expect(page).to have_content question.title
-    expect(page).to have_content question.body
-    expect(page).to have_content answer.body
-    expect(page).to have_content(questions[0].title)
+    expect(page).to have_content(question[0].title)
     expect(page).to have_content(questions[1].title)
   end
 end
