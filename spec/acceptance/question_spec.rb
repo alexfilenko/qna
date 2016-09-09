@@ -6,7 +6,9 @@ feature 'Question stories', %q{
   I want to be able working with questions
 } do
 
-    given(:user) { create(:user) }
+    given!(:user) { create(:user) }
+    given!(:user_question) { create(:question, user: user) }
+    let!(:question) { create(:question) }
 
   
   scenario 'Authenticated user creates question' do
@@ -35,6 +37,7 @@ feature 'Question stories', %q{
 
     scenario 'User see all questions' do
     visit questions_path
+    save_and_open_page
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     expect(page).to have_content answer.body

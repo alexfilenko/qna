@@ -24,7 +24,6 @@ feature 'Answer stories', %q{
 
     scenario 'Non-authenticated user create answer' do
     visit question_path(question)
-
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(current_path).to eq new_user_session_path
   end

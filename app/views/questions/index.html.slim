@@ -1,5 +1,5 @@
-h3 Questions 
-h2 You need to sign in or sign up before continuing.
+
+h2 Questions 
 table.table.table-striped
   thead
     tr
@@ -8,6 +8,7 @@ table.table.table-striped
 
   tbody
     - @questions.each do |question|
+
       tr
         td = question.title
         td
