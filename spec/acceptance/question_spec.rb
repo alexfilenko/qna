@@ -17,8 +17,7 @@ feature 'Question stories', %q{
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text'
-    
-
+    click_on 'Ask question'
     expect(page).to have_content 'Your question successfully created.'
   end
 
@@ -37,7 +36,6 @@ feature 'Question stories', %q{
 
     scenario 'User see all questions' do
     visit questions_path
-    save_and_open_page
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     expect(page).to have_content answer.body
