@@ -40,8 +40,8 @@ feature 'User sign in', %q{
     click_on 'Registration'
 
     fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
-    fill_in 'Password conformation', with: '12345678'
+    fill_in('Password', with: '12345678', :match => :prefer_exact)
+    fill_in 'Password confirmation', with: '12345678'
 
     click_on 'Sign up'
 
