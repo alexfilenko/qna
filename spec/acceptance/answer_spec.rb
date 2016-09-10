@@ -11,30 +11,32 @@ feature 'Answer stories', %q{
     given(:user_answer) { create(:answer, question: question, user: user) }
 
 
-  scenario 'User create answer' do
+  scenario 'Authenticated user creates answer' do
     sign_in(user)
     click_on 'Add answer'
     visit questions_path(question)
     fill_in 'Body', with: 'text text'
-
+    click_on 'Add answer'
     expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content('text text')
     expect(current_path).to eq question_path(question)
   end
 
     scenario 'Non-authenticated user create answer' do
-    visit question_path(question)
-    expect(page).to have_content('You need to sign in or sign up before continuing.')
-    expect(current_path).to eq new_user_session_path
+    visit question_path question
+    expect(page).to_not have_content 'Add answer'
+
+    visit new_question_answer_path question
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
     scenario 'Aut user delete answer' do
-    sign_in(user)
-    visit question_path(question)
-    click_on 'Delete'
+    user_answer
 
-    expect(page).to_not have_content(answer.body)
-    expect(current_path).to eq question_path(question)
+    sign_in(user)
+    visit question_path question
+    find('.table').click_on 'Delete'
+    expect(page).to have_content 'Your answer successfully deleted'
   end
 
   scenario "No aut delete over answer" do

@@ -29,15 +29,13 @@ feature 'Question stories', %q{
 
     scenario 'Authenticated user delete question' do
     sign_in(user)
-    visit question_path
+    visit question_path user_question
     click_on 'Delete'
     expect(page).to have_content 'Your question successfully deleted'
   end
 
     scenario 'User see all questions' do
     visit questions_path
-    expect(page).to have_content question.title
-    expect(page).to have_content(question[0].title)
-    expect(page).to have_content(questions[1].title)
+    expect(page).to have_content user_question.title
   end
 end
