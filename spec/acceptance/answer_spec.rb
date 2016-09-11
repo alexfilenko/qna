@@ -9,20 +9,21 @@ feature 'Answer stories', %q{
     given!(:question) { create(:question) }
     given(:answer) { create(:answer, question: question) }
     given(:user_answer) { create(:answer, question: question, user: user) }
+    given!(:questions) { create_list(:question, 2) }
 
 
   scenario 'Authenticated user creates answer' do
     sign_in(user)
+    visit question_path(question)
     click_on 'Add answer'
-    visit questions_path(question)
     fill_in 'Body', with: 'text text'
-    click_on 'Add answer'
+    click_on 'Post your answer'
     expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content('text text')
     expect(current_path).to eq question_path(question)
   end
 
-    scenario 'Non-authenticated user create answer' do
+  scenario 'Non-authenticated user create answer' do
     visit question_path question
     expect(page).to_not have_content 'Add answer'
 
@@ -30,7 +31,7 @@ feature 'Answer stories', %q{
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-    scenario 'Aut user delete answer' do
+  scenario 'Aut user delete answer' do
     user_answer
 
     sign_in(user)
@@ -46,12 +47,11 @@ feature 'Answer stories', %q{
     expect(current_path).to eq question_path(question)
   end
 
-    scenario 'View question and answers list' do
-    visit question_path(question)
-
-    expect(page).to have_content(question.title)
-    expect(page).to have_content(question.body)
-    expect(page).to have_content(question.answers[0].body)
-    expect(page).to have_content(question.answers[1].body)
+  scenario 'View question and answers list' do
+    visit questions_path
+    expect(page).to have_content 'Questions'
+    questions.each do |q|
+    expect(page).to have_content q.title
   end
+ end
 end
