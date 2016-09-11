@@ -20,18 +20,6 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq user_answer
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
@@ -110,7 +98,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     sign_in_user
 
-    it 'deletes answer' do
+    it 'delete answer' do
       expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
     end
 
