@@ -1,0 +1,14 @@
+
+.ruby-version
+
+.ruby-gemset
+
+*.log
+
+*.cache
+
+*.txt
+
+tmp/
+
+log/

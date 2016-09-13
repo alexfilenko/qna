@@ -11,16 +11,21 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
+gem 'devise'
+gem 'bootstrap-sass'
+gem 'simple_form'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
-  gem 'byebug', platform: :mri
+  gem 'pry-byebug'
 end
 
 group :test do
   gem 'shoulda-matchers', require: false
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do

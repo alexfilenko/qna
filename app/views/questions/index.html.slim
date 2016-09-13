@@ -1,0 +1,22 @@
+h6 You need to sign in or sign up before continuing.
+h2 Questions 
+table.table.table-striped
+  thead
+    tr
+      th Title
+      th
+
+  tbody
+    - @questions.each do |question|
+
+      tr
+        td = question.title
+        td
+          = link_to 'View', question
+          br
+          = link_to 'Delete', question
+          br
+          = link_to 'Add answer', question
+          br
+- if user_signed_in?
+  = link_to 'Ask question', new_question_path

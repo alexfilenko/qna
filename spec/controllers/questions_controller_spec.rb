@@ -19,7 +19,7 @@ RSpec.describe QuestionsController, type: :controller do
   
   describe 'GET #show' do
     
-    before { get :show, params: { id: question } }
+    before { get :show, params: {id: question }}
     
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
@@ -35,6 +35,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #new' do
+    sign_in_user
+
     before { get :new }
     
     it 'assigns anew Question to @question' do
@@ -47,6 +49,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #edit' do
+    sign_in_user
     
     before { get :edit, params: { id: question } }
     
@@ -60,9 +63,14 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'POST #create' do
+    sign_in_user
     context 'with valid attributes' do
       it 'saves the new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+      end
+
+      it 'belong to logged in user' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(@user.questions, :count).by(1)
       end
       
       it 'redirects to show view' do
@@ -84,6 +92,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'PATCH #update' do
+    sign_in_user
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -91,7 +100,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        patch :update, id: question, question: { title: 'new title', body: 'new body' }
         question.reload
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
@@ -104,12 +113,12 @@ RSpec.describe QuestionsController, type: :controller do
     end
     
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
+      before { patch :update, params: { id: question, question: attributes_for(:invalid_question) } }
       
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq 'new title'
+        expect(question.body).to eq 'new body'
       end
       
       it 're-render new view' do
@@ -119,8 +128,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'DELETE #destroy' do
-    before { question }
-    
+    sign_in_user
+
+    context 'author' do
+      before { question.update(user_id: @user.id) }
+
     it 'deletes question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
@@ -129,5 +141,13 @@ RSpec.describe QuestionsController, type: :controller do
       delete :destroy, params: { id: question }
       expect(response).to redirect_to questions_path
     end
-  end  
+  end
+
+    context 'not author' do
+      before { question }
+    it 'does not delete question' do
+        expect { delete :destroy, params: { id: question} }.to_not change(Question, :count)
+    end
+   end
+  end
 end
