@@ -52,11 +52,10 @@ class QuestionsController < ApplicationController
     if current_user.author_of?(@question)
       @question.destroy
       flash[:success] = "Your question has been successfully deleted!"
-      redirect_to questions_path
     else
       flash[:error] = "You cannot delete questions written by others."
-      redirect_to @question
     end
+    redirect_to questions_path
   end
   
   private
